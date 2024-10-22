@@ -22,7 +22,7 @@ test.describe('Проверка заказов', () => {
   });
 
   test('Нормализован лимит', async ({ request }) => {
-    const response = await request.get(`${process.env.API_URL}/orders/all?page=2&limit=1000`, {
+    const response = await request.get(`${process.env.API_URL}/order/all?page=2&limit=1000`, {
       headers: {
         'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`
       }
@@ -33,7 +33,7 @@ test.describe('Проверка заказов', () => {
   });
 
   test('При избыточной аггрегации, уязвимой к инъекции должна быть ошибка', async ({ request }) => {
-    const response = await request.get(`${process.env.API_URL}/orders/all?status[$expr][$function][body]='function%20(status)%20%7B%20return%20status%20%3D%3D%3D%20%22completed%22%20%7D'&status[$expr][$function][lang]=js&status[$expr][$function][args][0]=%24status`, {
+    const response = await request.get(`${process.env.API_URL}/order/all?status[$expr][$function][body]='function%20(status)%20%7B%20return%20status%20%3D%3D%3D%20%22completed%22%20%7D'&status[$expr][$function][lang]=js&status[$expr][$function][args][0]=%24status`, {
       headers: {
         'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`
       }
@@ -42,7 +42,7 @@ test.describe('Проверка заказов', () => {
   });
 
   test('Санитизирован комментарий', async ({ request }) => {
-    const response = await request.post(`${process.env.API_URL}/orders`, {
+    const response = await request.post(`${process.env.API_URL}/order`, {
       headers: {
         'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`
       },
@@ -63,7 +63,7 @@ test.describe('Проверка заказов', () => {
   });
 
   test('Уязвимость телефона', async ({ request }) => {
-    const response = await request.post(`${process.env.API_URL}/orders`, {
+    const response = await request.post(`${process.env.API_URL}/order`, {
       headers: {
         'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`
       },
@@ -81,7 +81,7 @@ test.describe('Проверка заказов', () => {
   });
 
   test('Проверка роли (у пользователя отсутствует доступ к базе всех заказов)', async ({ request }) => {
-    const response = await request.get(`${process.env.API_URL}/orders/all`, {
+    const response = await request.get(`${process.env.API_URL}/order/all`, {
       headers: {
         'Authorization': `Bearer ${process.env.USER_TOKEN}`
       }
@@ -233,7 +233,7 @@ test.describe('Общие проверки', () => {
   });
 
   test('Лимит на размер body', async ({ request }) => {
-    const response = await request.post(`${process.env.API_URL}/orders`, {
+    const response = await request.post(`${process.env.API_URL}/order`, {
       headers: {
         'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`
       },
